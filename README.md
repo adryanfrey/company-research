@@ -57,7 +57,7 @@ Your solution will be evaluated on the following:
 
 ## Submission Guidelines
 
-1. Create a new repository from this template to your private GitHub account. Follow [these instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template) to create a new repository from a template.  
+1. Create a new repository from this template to your private GitHub account. 
 2. Make sure the repository is **private**.  
 3. Invite the following user to access your submission:  
    - `budg`
