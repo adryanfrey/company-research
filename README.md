@@ -50,10 +50,6 @@ Your solution will be evaluated on the following:
    - Design fidelity
    - Smooth, responsive, and intuitive interactions
 
-3. **Technical Architecture**  
-   - Efficient data structures for managing message threads.
-   - Robust application architecture.
-
 
 ## Submission Guidelines
 
