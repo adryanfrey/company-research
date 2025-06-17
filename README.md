@@ -48,6 +48,7 @@ Your solution will be evaluated on the following:
 
 2. **UI/UX Implementation**  
    - Design fidelity
+   - Relevant and intuitive form validation
    - Smooth, responsive, and intuitive interactions
 
 
