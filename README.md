@@ -9,20 +9,21 @@ The starting repository contains a basic UI with a mocked-up backend.
 
 Your solution should showcase your ability to:
 - Write clean, maintainable, and well-documented code.
-- Develop a high-quality and user-friendly interface following design principles.
+- Develop a high-quality and user-friendly interface following our design language.
 - Implement efficient logical structures and data handling.
 
 ## Tasks
 
 ### 1. UI Improvements  
-- Improve the look and feel of the provided UI and follow the visual style of the [Venta AI application](https://app.getventa.ai) (a login is not possible; however, we provide video walkthroughs on our [website](https://www.getventa.ai))
+- Improve the look and feel of the provided UI and follow the visual style of the [Venta AI application](https://app.getventa.ai) (a login is not possible)
 - Add validation of user input (valid website URL and at least one question entered)
 - Use the [Mantine component library](https://mantine.dev)
 
 
 ### 2. Research Tool  
 - Implement the **basic** functionality of the provided mock function
-- Your function should retrieve the content of the url provided by the user.
+- Your function should retrieve the content of the url provided by the user. 
+- You may want to use OpenAI's [WebSearch Tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=responses).
 - Your function should then call an OpenAI model (such as GPT-4.1-mini) and retrieve the answer to the user's question
 > Please be aware that this can be quite a rabbit hole. It's okay to keep things simple here and it's fine if there are some edge cases remaining that are not handled. Ideally you are aware of them and can tell us about the limitations of your solution
 
@@ -33,8 +34,24 @@ Your solution should showcase your ability to:
 - You can import additional libraries if needed.
 - Use the OpenAI SDK for the interactions with the LLM.
 > Note: You will need an OpenAI API Key to consume the OpenAI models. If you don't have one / can't / don't want to set up an account with OpenAI, please reach out to us and we will provide you with an API key. Generally, make sure to use a cheap model in development (eg. GPT-4.1-mini).
-- To run the app use 
-```shellscript
+- To set up and run the backend use:
+```shell
+# Create a virtual environment
+cd api
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Make sure pip is up to date
+python -m pip install --upgrade pip
+# Install dependencies from pyproject.toml
+python -m pip install -e .
+
+# Run the FastAPI dev server
+uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+```
+- To run the frontend use 
+```shell
+cd web
 npm run dev
 ```
 
@@ -44,10 +61,12 @@ Your solution will be evaluated on the following:
 
 1. **Code Quality**  
    - Clean, modular code structure
-   - TypeScript implementation, error handling, and documentation.  
+   - Correct typing in TypeScript and Python
+   - Error handling and minimal documentation
 
 2. **UI/UX Implementation**  
    - Design fidelity
+   - Feature richness and usability
    - Relevant and intuitive form validation
    - Smooth, responsive, and intuitive interactions
 
@@ -61,4 +80,11 @@ Your solution will be evaluated on the following:
    - `sebammon`
 
 ## Expectations
-We expect you to spend approximately **3 - 4 hours** on this challenge, focusing on the most relevant aspects of the tasks described above. While you’re welcome to invest more time if you choose, it is **not required**. You are encouraged to **prioritize** specific areas of the challenge based on your strengths and time availability. Typically, you will have until **the end of the next weekend** to submit your solution. If you have any questions or need clarification at any point, please don’t hesitate to reach out to us. To review your submission, we will schedule a **45-minute follow-up call**. During this session, you’ll have the opportunity to walk us through your implementation, and we’ll ask a few technical questions to better understand your approach. If you already have a review call scheduled, please submit your solution at least before 16:00 the day before the call.
+We expect you to spend approximately **2 - 3 hours** on this challenge, focusing on the most relevant aspects of the tasks described above. 
+While you’re welcome to invest more time if you choose, it is **not required**. 
+You are encouraged to **prioritize** specific areas of the challenge based on your strengths and time availability. 
+Typically, you will have until **the end of the next weekend** to submit your solution. 
+If you have any questions or need clarification at any point, please don’t hesitate to reach out to us. 
+To review your submission, we will schedule a **45-minute follow-up call**. 
+During this session, you’ll have the opportunity to walk us through your implementation, and we’ll ask a few technical questions to better understand your approach. 
+If you already have a review call scheduled, please submit your solution at least before 16:00 the day before the call.

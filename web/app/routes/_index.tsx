@@ -4,8 +4,8 @@ import { useState } from 'react';
 import { Container, Stack, Title, TextInput, Button, Paper, Text, Card, Divider } from '@mantine/core';
 import { IconPlus, IconSearch } from '@tabler/icons-react';
 import { Form, useActionData } from '@remix-run/react';
-import type { Question, ResearchResult } from '~/types';
-import { getMockAnswer } from '~/utils';
+import type { Question, ResearchResult } from '../types';
+import { getMockAnswer } from '../utils';
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
