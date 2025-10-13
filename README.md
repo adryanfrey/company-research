@@ -6,7 +6,6 @@ The starting repository contains a basic UI with a mocked-up backend.
 
 
 ## Objectives
-
 Your solution should showcase your ability to:
 - Write clean, maintainable, and well-documented code.
 - Develop a high-quality and user-friendly interface following our design language.
@@ -17,7 +16,6 @@ Your solution should showcase your ability to:
 ### 1. UI Improvements  
 - Improve the look and feel of the provided UI and follow the visual style of the [Venta AI application](https://app.getventa.ai) (a login is not possible)
 - Add validation of user input (valid website URL and at least one question entered)
-- Use the [Mantine component library](https://mantine.dev)
 
 
 ### 2. Research Tool  
@@ -29,8 +27,8 @@ Your solution should showcase your ability to:
 
 
 ## Technical Guidelines
-
-- Use the provided repository as your starting point. It was intialized with Remix. [Remix docs](https://remix.run/docs)
+- Use the provided repository as your starting point. It was intialized with React and FastAPI.
+- For UI components, use the [Mantine component library](https://mantine.dev)
 - You can import additional libraries if needed.
 - Use the OpenAI SDK for the interactions with the LLM.
 > Note: You will need an OpenAI API Key to consume the OpenAI models. If you don't have one / can't / don't want to set up an account with OpenAI, please reach out to us and we will provide you with an API key. Generally, make sure to use a cheap model in development (eg. GPT-4.1-mini).
@@ -49,7 +47,7 @@ python -m pip install -e .
 # Run the FastAPI dev server
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
-- To run the frontend use 
+- To run the frontend use (checke the ui/README.md for more details)
 ```shell
 cd web
 npm run dev
