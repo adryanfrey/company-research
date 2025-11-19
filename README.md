@@ -1,19 +1,20 @@
 # Engineering Assignment
 
 Your task is to enhance a small app that allows users to ask qualifying questions about a given company. 
-Your final submission should adhere to the design language of the [Venta AI application](https://app.getventa.ai) and feature a functioning company research tool.
+Your final submission should feature a functioning company research tool.
 The starting repository contains a basic UI with a mocked-up backend.
 
 
 ## Objectives
 Your solution should showcase your ability to:
-- Write clean, maintainable, and well-documented code.
-- Develop a high-quality and user-friendly interface following our design language.
+- Write clean, maintainable, and well-documented code (we care about code quality when grading this assignment!)
+- Develop a high-quality and user-friendly interface.
 - Implement efficient logical structures and data handling.
 
 ## Tasks
 
-### 1. UI Improvements  
+### 1. UI
+- Implement the logic of the company research tool
 - Improve the look and feel of the provided UI and follow the visual style of the [Venta AI application](https://app.getventa.ai) (a login is not possible)
 - Add validation of user input (valid website URL and at least one question entered)
 
@@ -22,7 +23,7 @@ Your solution should showcase your ability to:
 - Implement the **basic** functionality of the provided mock function
 - Your function should retrieve the content of the url provided by the user. 
 - You may want to use OpenAI's [WebSearch Tool](https://platform.openai.com/docs/guides/tools-web-search?api-mode=responses).
-- Your function should then call an OpenAI model (such as GPT-4.1-mini) and retrieve the answer to the user's question
+- Your function should then call an OpenAI model (such as GPT-5.1-mini) and retrieve the answer to the user's question
 > Please be aware that this can be quite a rabbit hole. It's okay to keep things simple here and it's fine if there are some edge cases remaining that are not handled. Ideally you are aware of them and can tell us about the limitations of your solution
 
 
