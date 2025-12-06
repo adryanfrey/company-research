@@ -14,7 +14,7 @@ import { Form } from "react-router";
 
 const mockResults = [
   {
-    question: "What is the company’s primary revenue model?",
+    question: "What is the company's primary revenue model?",
     answer:
       "Subscription-based SaaS with tiered plans and annual enterprise contracts.",
   },
@@ -30,15 +30,15 @@ const mockResults = [
   },
 ];
 
-export default function Research() {
+export default function Home() {
   return (
     <Container size="md" py={40}>
       <Stack gap={40}>
         <Stack align="center" gap={16}>
-          <Title order={1} c="blue.7">
+          <Title order={1} c="dark">
             Company Research Assistant
           </Title>
-          <Text c="gray.6">
+          <Text c="dark">
             Enter a company domain and ask up to 3 qualifying questions to get
             AI-powered insights
           </Text>
@@ -59,7 +59,7 @@ export default function Research() {
               <Stack gap={16}>
                 <TextInput
                   label={`Question 1`}
-                  placeholder="What is the company’s primary revenue model?"
+                  placeholder="What is the company's primary revenue model?"
                 />
 
                 <Button
