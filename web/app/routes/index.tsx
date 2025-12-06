@@ -12,7 +12,8 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconPlus, IconSearch, IconTrash } from "@tabler/icons-react";
-import type { ActionFunctionArgs } from "react-router";
+import { Form, useSubmit, type ActionFunctionArgs } from "react-router";
+import { isValidHttpUrl } from "../utils/is-valid-http-url";
 
 const mockResults = [
   {
@@ -33,14 +34,18 @@ const mockResults = [
 ];
 
 export default function Home() {
+  const submit = useSubmit();
   const form = useForm({
     initialValues: {
       companyWebsite: "",
       questions: [{ id: crypto.randomUUID(), value: "" }],
     },
     validate: {
-      companyWebsite: (value) =>
-        value.trim() ? null : "Company website is required",
+      companyWebsite: (value) => {
+        if (!value.trim()) return "Company website is required";
+        if (!isValidHttpUrl(value)) return "Please enter a valid URL (https://example.com)";
+        return null;
+      },
       questions: (values) => {
         const errors = values.map((q) =>
           q.value.trim() ? null : "Question is required"
@@ -51,7 +56,13 @@ export default function Home() {
   });
 
   const handleSubmit = (values: typeof form.values) => {
-    console.log("Form submitted:", values);
+    submit(
+      {
+        companyWebsite: values.companyWebsite,
+        questions: JSON.stringify(values.questions),
+      },
+      { method: "post" }
+    );
   };
 
   const addQuestion = () => {
@@ -78,7 +89,7 @@ export default function Home() {
         </Stack>
 
         <Paper p={32} withBorder>
-          <form method="post" onSubmit={form.onSubmit(handleSubmit)}>
+          <Form method="post" onSubmit={form.onSubmit(handleSubmit)}>
             <Stack gap={14}>
               <TextInput
                 label="Company Website"
@@ -138,7 +149,7 @@ export default function Home() {
                 Start Research
               </Button>
             </Stack>
-          </form>
+          </Form>
         </Paper>
 
         {mockResults.length > 0 && (
