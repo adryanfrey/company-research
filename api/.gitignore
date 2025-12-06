@@ -1,0 +1,12 @@
+# Local env files (keep examples)
+.env
+.env.*
+!.env.example
+
+# Virtualenvs
+.venv/
+venv/
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db

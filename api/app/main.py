@@ -1,10 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import List
-import asyncio
-
-from app.services.mock_answers import get_mock_answer
+from app.apis.research import router as research_router
 
 app = FastAPI()
 
@@ -18,25 +14,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-class ResearchResult(BaseModel):
-    question: str
-    answer: str
-
-
-@app.post("/api/research")
-async def research_questions(questions: List[str]) -> List[ResearchResult]:
-    # Simulate processing delay
-    await asyncio.sleep(2)
-
-    # Filter out empty questions and generate results
-    results = [
-        ResearchResult(
-            question=q_text,
-            answer=get_mock_answer(q_text)
-        )
-        for q_text in questions
-        if q_text.strip() != ""
-    ]
-
-    return results
+app.include_router(
+    research_router,
+    prefix="/api/research",
+    tags=["Research"],
+)
