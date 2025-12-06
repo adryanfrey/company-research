@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Button,
   Card,
   Container,
@@ -9,8 +10,9 @@ import {
   Title,
   Divider,
 } from "@mantine/core";
-import { IconPlus, IconSearch } from "@tabler/icons-react";
-import { Form } from "react-router";
+import { useForm } from "@mantine/form";
+import { IconPlus, IconSearch, IconTrash } from "@tabler/icons-react";
+import type { ActionFunctionArgs } from "react-router";
 
 const mockResults = [
   {
@@ -31,6 +33,37 @@ const mockResults = [
 ];
 
 export default function Home() {
+  const form = useForm({
+    initialValues: {
+      companyWebsite: "",
+      questions: [{ id: crypto.randomUUID(), value: "" }],
+    },
+    validate: {
+      companyWebsite: (value) =>
+        value.trim() ? null : "Company website is required",
+      questions: (values) => {
+        const errors = values.map((q) =>
+          q.value.trim() ? null : "Question is required"
+        );
+        return errors.some((e) => e !== null) ? errors : null;
+      },
+    },
+  });
+
+  const handleSubmit = (values: typeof form.values) => {
+    console.log("Form submitted:", values);
+  };
+
+  const addQuestion = () => {
+    if (form.values.questions.length < 3) {
+      form.insertListItem("questions", { id: crypto.randomUUID(), value: "" });
+    }
+  };
+
+  const removeQuestion = (index: number) => {
+    form.removeListItem("questions", index);
+  };
+
   return (
     <Container size="md" py={40}>
       <Stack gap={40}>
@@ -45,27 +78,58 @@ export default function Home() {
         </Stack>
 
         <Paper p={32} withBorder>
-          <Form method="post">
-            <Stack gap={24}>
+          <form method="post" onSubmit={form.onSubmit(handleSubmit)}>
+            <Stack gap={14}>
               <TextInput
                 label="Company Website"
                 placeholder="https://example.com"
-                name="companyWebsite"
                 leftSection={<IconSearch size={16} />}
+                withAsterisk
+                {...form.getInputProps("companyWebsite")}
               />
 
               <Divider label="Qualifying Questions" labelPosition="center" />
 
               <Stack gap={16}>
-                <TextInput
-                  label={`Question 1`}
-                  placeholder="What is the company's primary revenue model?"
-                />
+                {form.values.questions.map((question, index) => (
+                  <TextInput
+                    key={question.id}
+                    label={`Question ${index + 1}`}
+                    withAsterisk
+                    placeholder="What is the company's primary revenue model?"
+                    value={question.value}
+                    onChange={(event) =>
+                      form.setFieldValue(
+                        `questions.${index}.value`,
+                        event.currentTarget.value
+                      )
+                    }
+                    error={
+                      Array.isArray(form.errors.questions)
+                        ? form.errors.questions[index]
+                        : null
+                    }
+                    rightSection={
+                      index > 0 && (
+                        <ActionIcon
+                          variant="light"
+                          color="red"
+                          size="sm"
+                          onClick={() => removeQuestion(index)}
+                        >
+                          <IconTrash size={16} />
+                        </ActionIcon>
+                      )
+                    }
+                  />
+                ))}
 
                 <Button
                   variant="light"
                   leftSection={<IconPlus size={16} />}
                   size="sm"
+                  onClick={addQuestion}
+                  disabled={form.values.questions.length >= 3}
                 >
                   Add Question
                 </Button>
@@ -74,7 +138,7 @@ export default function Home() {
                 Start Research
               </Button>
             </Stack>
-          </Form>
+          </form>
         </Paper>
 
         {mockResults.length > 0 && (
@@ -106,3 +170,7 @@ export default function Home() {
     </Container>
   );
 }
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  console.log("test action");
+};

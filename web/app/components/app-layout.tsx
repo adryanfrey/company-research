@@ -17,7 +17,13 @@ export function AppLayout({ children }: AppLayoutProps) {
     >
       <BackgroundImage
         src="/venta_background.jpeg"
-        style={{ width: "100%", height: "100%", position: "absolute" }}
+        style={{
+          width: "100%",
+          height: "100vh",
+          position: "fixed",
+          top: 0,
+          left: 0,
+        }}
       >
         <Box
           style={{
