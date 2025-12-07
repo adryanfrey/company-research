@@ -16,10 +16,6 @@ router = APIRouter()
 @router.post(
     "/",
     responses={
-        400: {
-            "description": "Value error (invalid input)",
-            "model": ErrorResponseModel,
-        },
         403: {
             "description": "Request blocked by security guardrail",
             "model": ErrorResponseModel,
@@ -52,13 +48,6 @@ async def research_questions(
             content={
                 "detail": "Request blocked by guardrail. Please try again with a different input.",
             },
-        )
-
-    except ValueError as e:
-        logger.error(f"Value error: {e}")
-        return JSONResponse(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            content={"detail": "Invalid input provided"},
         )
 
     except TimeoutError as e:

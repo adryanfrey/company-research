@@ -1,11 +1,12 @@
 import asyncio
 import json
-from typing import List
+from typing import Any, List, cast
 from agents import (
     Agent,
     GuardrailFunctionOutput,
-    InputGuardrailTripwireTriggered,
+    InputGuardrail,
     ModelSettings,
+    OutputGuardrail,
     RunContextWrapper,
     RunResult,
     Runner,
@@ -52,7 +53,7 @@ class ResearchService:
             output_guardrails=[self._create_output_guardrail()],
         )
 
-    def _create_input_guardrail(self):
+    def _create_input_guardrail(self) -> InputGuardrail[Any]:
         class GuardrailResult(BaseModel):
             is_input_safe: bool
             reasoning: str
@@ -64,9 +65,9 @@ class ResearchService:
             output_type=GuardrailResult,
         )
 
-        @input_guardrail
+        @input_guardrail  # type: ignore[arg-type]
         async def input_guardrail_fn(
-            ctx: RunContextWrapper, _agent: Agent, input: str
+            ctx: RunContextWrapper[Any], _agent: Agent[Any], input: str
         ) -> GuardrailFunctionOutput:
             result = await self._run_with_timeout(
                 agent, input, ctx.context, self._agent_config.timeout
@@ -78,7 +79,7 @@ class ResearchService:
 
         return input_guardrail_fn
 
-    def _create_output_guardrail(self):
+    def _create_output_guardrail(self) -> OutputGuardrail[Any]:
         class GuardrailResult(BaseModel):
             is_output_safe: bool
             reasoning: str
@@ -92,7 +93,9 @@ class ResearchService:
 
         @output_guardrail
         async def output_guardrail_fn(
-            ctx: RunContextWrapper, _agent: Agent, output: ResearchQuestionsResult
+            ctx: RunContextWrapper[Any],
+            _agent: Agent[Any],
+            output: ResearchQuestionsResult,
         ) -> GuardrailFunctionOutput:
             result = await self._run_with_timeout(
                 agent,
@@ -141,26 +144,9 @@ class ResearchService:
                 {},
                 self._agent_config.timeout,
             )
-
-        return result.final_output
+            
+        return cast(List[QuestionAnswer], result.final_output)
 
 
 def get_research_service() -> ResearchService:
     return ResearchService(ResearchAgentConfig())
-
-
-if __name__ == "__main__":
-    research_service = get_research_service()
-
-    async def main():
-        answers = await research_service.research_questions(
-            company_website="https://www.salaciasolutions.com",
-            questions=[
-                "What is the company's mission?",
-                "What is the company's vision?",
-                "What is the company's values?",
-            ],
-        )
-        print(answers)
-
-    asyncio.run(main())

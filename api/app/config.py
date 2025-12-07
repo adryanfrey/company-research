@@ -9,4 +9,4 @@ class Settings(BaseSettings):
     global_llm_model: str
 
 
-settings = Settings()
+settings = Settings()  # type: ignore[call-arg]
