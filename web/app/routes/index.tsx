@@ -1,31 +1,18 @@
 import {
-  ActionIcon,
-  Anchor,
   Button,
-  Card,
   Container,
-  Loader,
   Paper,
   Stack,
   Text,
-  TextInput,
   Title,
-  Divider,
   Center,
-  Skeleton,
 } from "@mantine/core";
-import { useForm } from "@mantine/form";
 import {
-  IconPlus,
-  IconSearch,
-  IconTrash,
-  IconFileSearch,
   IconShieldOff,
   IconClockOff,
   IconAlertTriangle,
 } from "@tabler/icons-react";
 import {
-  Form,
   isRouteErrorResponse,
   Link,
   useActionData,
@@ -34,7 +21,11 @@ import {
   useSubmit,
   type ActionFunctionArgs,
 } from "react-router";
-import { isValidHttpsUrl } from "../utils/is-valid-https-url";
+import {
+  ResearchForm,
+  type ResearchFormValues,
+} from "../components/research-form";
+import { ResearchResults } from "../components/research-results";
 import {
   researchQuestions,
   type QuestionAnswer,
@@ -50,28 +41,7 @@ export default function Home() {
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  const form = useForm({
-    initialValues: {
-      companyWebsite: "",
-      questions: [{ id: crypto.randomUUID(), value: "" }],
-    },
-    validate: {
-      companyWebsite: (value) => {
-        if (!value.trim()) return "Company website is required";
-        if (!isValidHttpsUrl(value))
-          return "Please enter a valid URL (https://example.com)";
-        return null;
-      },
-      questions: (values) => {
-        const errors = values.map((q) =>
-          q.value.trim() ? null : "Question is required"
-        );
-        return errors.some((e) => e !== null) ? errors : null;
-      },
-    },
-  });
-
-  const handleSubmit = (values: typeof form.values) => {
+  const handleSubmit = (values: ResearchFormValues) => {
     submit(
       {
         companyWebsite: values.companyWebsite,
@@ -79,16 +49,6 @@ export default function Home() {
       },
       { method: "post" }
     );
-  };
-
-  const addQuestion = () => {
-    if (form.values.questions.length < 3) {
-      form.insertListItem("questions", { id: crypto.randomUUID(), value: "" });
-    }
-  };
-
-  const removeQuestion = (index: number) => {
-    form.removeListItem("questions", index);
   };
 
   return (
@@ -104,151 +64,12 @@ export default function Home() {
           </Text>
         </Stack>
 
-        <Paper p={32} withBorder>
-          <Form method="post" onSubmit={form.onSubmit(handleSubmit)}>
-            <Stack gap={14}>
-              <TextInput
-                label="Company Website"
-                placeholder="https://example.com"
-                leftSection={<IconSearch size={16} />}
-                withAsterisk
-                {...form.getInputProps("companyWebsite")}
-              />
+        <ResearchForm isSubmitting={isSubmitting} onSubmit={handleSubmit} />
 
-              <Divider label="Qualifying Questions" labelPosition="center" />
-
-              <Stack gap={16}>
-                {form.values.questions.map((question, index) => (
-                  <TextInput
-                    key={question.id}
-                    label={`Question ${index + 1}`}
-                    withAsterisk
-                    placeholder="What is the company's primary revenue model?"
-                    value={question.value}
-                    onChange={(event) =>
-                      form.setFieldValue(
-                        `questions.${index}.value`,
-                        event.currentTarget.value
-                      )
-                    }
-                    error={
-                      Array.isArray(form.errors.questions)
-                        ? form.errors.questions[index]
-                        : null
-                    }
-                    rightSection={
-                      index > 0 && (
-                        <ActionIcon
-                          variant="light"
-                          color="red"
-                          size="sm"
-                          onClick={() => removeQuestion(index)}
-                        >
-                          <IconTrash size={16} />
-                        </ActionIcon>
-                      )
-                    }
-                  />
-                ))}
-
-                <Button
-                  variant="light"
-                  leftSection={<IconPlus size={16} />}
-                  size="sm"
-                  onClick={addQuestion}
-                  disabled={form.values.questions.length >= 3 || isSubmitting}
-                >
-                  Add Question
-                </Button>
-              </Stack>
-              <Button
-                type="submit"
-                leftSection={
-                  isSubmitting ? <Loader size={16} /> : <IconSearch size={16} />
-                }
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Researching..." : "Start Research"}
-              </Button>
-            </Stack>
-          </Form>
-        </Paper>
-
-        {isSubmitting && (
-          <Stack gap={24}>
-            <Title order={2} c="gray.8">
-              Researching...
-            </Title>
-            {form.values.questions.map((question) => (
-              <Card key={question.id} padding="lg" withBorder>
-                <Stack gap={16}>
-                  <Skeleton height={24} width="60%" />
-                  <Skeleton height={60} />
-                  <Skeleton height={16} width="40%" />
-                </Stack>
-              </Card>
-            ))}
-          </Stack>
-        )}
-
-        {!isSubmitting &&
-          actionData?.answers &&
-          actionData.answers.length > 0 && (
-            <Stack gap={24}>
-              <Title order={2} c="gray.8">
-                Research Results
-              </Title>
-
-              {actionData.answers.map((result, index) => (
-                <Card key={index} padding="lg" withBorder>
-                  <Stack gap={16}>
-                    <Text fw={600} size="lg" c="gray.8">
-                      {result.question}
-                    </Text>
-
-                    <Text c="gray.7" size="md">
-                      {result.answer}
-                    </Text>
-
-                    {result.sources && result.sources.length > 0 && (
-                      <Stack gap={4}>
-                        <Text size="sm" c="gray.6" fw={500}>
-                          Sources:
-                        </Text>
-                        <Stack gap={2}>
-                          {result.sources.map((source, sourceIndex) => (
-                            <Anchor
-                              key={sourceIndex}
-                              href={source}
-                              target="_blank"
-                              size="sm"
-                              c="blue.6"
-                            >
-                              {source}
-                            </Anchor>
-                          ))}
-                        </Stack>
-                      </Stack>
-                    )}
-                  </Stack>
-                </Card>
-              ))}
-            </Stack>
-          )}
-
-        {!isSubmitting && !actionData && (
-          <Paper p={40} withBorder>
-            <Center>
-              <Stack align="center" gap={16}>
-                <IconFileSearch size={48} color="gray" stroke={1.5} />
-                <Text c="gray.6" ta="center">
-                  Enter a company website and your questions above to start
-                  researching
-                </Text>
-              </Stack>
-            </Center>
-          </Paper>
-        )}
+        <ResearchResults
+          answers={actionData?.answers}
+          isLoading={isSubmitting}
+        />
       </Stack>
     </Container>
   );
