@@ -1,5 +1,12 @@
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
-import { MantineProvider } from "@mantine/core";
+import {
+  MantineProvider,
+  Container,
+  Title,
+  Text,
+  Button,
+  Stack,
+} from "@mantine/core";
 import { theme } from "./theme";
 import { AppLayout } from "./components/app-layout";
 import "@mantine/core/styles.css";
@@ -32,7 +39,20 @@ export default function Root() {
   );
 }
 
-// TODO: Add proper global error boundary
 export function ErrorBoundary() {
-  return <div>Error</div>;
+  return (
+    <AppLayout>
+      <Container size="sm" py={80}>
+        <Stack align="center" gap="md">
+          <Title order={1}>Something went wrong</Title>
+          <Text ta="center">
+            An unexpected error occurred. Please try again.
+          </Text>
+          <Button component="a" href="/" variant="light" mt="md">
+            Back to Home
+          </Button>
+        </Stack>
+      </Container>
+    </AppLayout>
+  );
 }
