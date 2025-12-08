@@ -3,7 +3,7 @@ import { parseAPIResponse } from "./parse-api-response.server";
 type FetchAPIParams = {
   url: string;
   method: "GET" | "POST" | "PUT" | "DELETE";
-  data: any;
+  data: unknown; 
   headers?: Record<string, string>;
 };
 

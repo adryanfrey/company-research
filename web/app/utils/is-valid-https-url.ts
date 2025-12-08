@@ -3,7 +3,7 @@ export function isValidHttpsUrl(string: string) {
 
   try {
     url = new URL(string);
-  } catch (_) {
+  } catch {
     return false;
   }
   return url.protocol === "https:";

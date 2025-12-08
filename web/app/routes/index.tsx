@@ -26,18 +26,11 @@ import {
   type ResearchFormValues,
 } from "../components/research-form";
 import { ResearchResults } from "../components/research-results";
-import {
-  researchQuestions,
-  type QuestionAnswer,
-} from "../services/research-questions.server";
-
-type ActionData = {
-  answers: QuestionAnswer[];
-};
+import { researchQuestions } from "../services/research-questions.server";
 
 export default function Home() {
   const submit = useSubmit();
-  const actionData = useActionData<ActionData>();
+  const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
