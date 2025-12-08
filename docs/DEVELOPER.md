@@ -213,4 +213,6 @@ The application will be available at `http://localhost:5173`
 5. **Database**: No database to store results
 6. **Authentication**: No user authentication
 7. **Testing**: No tests implemented (unit tests and E2E)
+8. **CI/CD**: No GitHub Actions workflow for automated testing/linting/deployments
+10. **Containerization**: No Docker configuration
 
